@@ -13,7 +13,7 @@ type User struct {
 	Password string `binding:"required"`
 }
 
-func (u User) Save() error {
+func (u *User) Save() error {
 	query := `INSERT INTO users(email, password)
 			  VALUES (?, ?)
 	`
@@ -45,7 +45,7 @@ func (u User) Save() error {
 	return err
 }
 
-func (u User) ValidateUser() error {
+func (u *User) ValidateUser() error {
 	query := `SELECT id, password FROM users WHERE email = ?`
 
 	row := db.DB.QueryRow(query, u.Email)
@@ -53,7 +53,7 @@ func (u User) ValidateUser() error {
 	fmt.Println("row", row)
 
 	var retrivedRow string
-	err := row.Scan(&u.ID ,&retrivedRow)
+	err := row.Scan(&u.ID, &retrivedRow)
 
 	fmt.Println("retrievedrow", row)
 

@@ -11,12 +11,12 @@ type Event struct {
 	Name        string `binding:"required"`
 	Description string `binding:"required"`
 	Location    string `binding:"required"`
-	UserID      int
+	UserID      int64
 }
 
 func (e *Event) Save() error {
-	query := `INSERT INTO events(name, description, location)
-	VALUES (?, ?, ?)`
+	query := `INSERT INTO events(name, description, location, user_id)
+	VALUES (?, ?, ?, ?)`
 
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
@@ -25,7 +25,7 @@ func (e *Event) Save() error {
 	}
 	defer stmt.Close()
 
-	result, err := stmt.Exec(e.Name, e.Description, e.Location)
+	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.UserID)
 	if err != nil {
 		log.Printf("Error executing query: %v", err)
 		return fmt.Errorf("failed to execute query: %w", err)
@@ -57,7 +57,7 @@ func GetAllEvents() ([]Event, error) {
 	for rows.Next() {
 		var event Event
 
-		err = rows.Scan(&event.ID, &event.Name, &event.Description, &event.Location)
+		err = rows.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.UserID)
 
 		if err != nil {
 			return nil, err
@@ -76,7 +76,7 @@ func GetEventById(id int64) (*Event, error) {
 	row := db.DB.QueryRow(query, id)
 
 	var event Event
-	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location)
+	err := row.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.UserID)
 
 	if err != nil {
 		return nil, err
@@ -85,7 +85,7 @@ func GetEventById(id int64) (*Event, error) {
 	return &event, nil
 }
 
-func (event Event) Update() error {
+func (event *Event) Update() error {
 	query := `
 	UPDATE events 
 	SET name = ?, description = ?, location = ?
@@ -103,7 +103,7 @@ func (event Event) Update() error {
 	return err
 }
 
-func (event Event) Delete() error {
+func (event *Event) Delete() error {
 	query := `DELETE FROM events where id = ?`
 
 	stmt, err := db.DB.Prepare(query)
