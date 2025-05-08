@@ -1,9 +1,9 @@
 POST http://localhost:8080/events
 content-Type: application/json
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwIjoxNzQ2NjIwNDY2LCJ1c2VySWQiOjN9.3s8vXN3Lg6DQUZ0j3oI4VDl1E-F1lMijhNLyEGfwpxs
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwIjoxNzQ2NjkzNzU5LCJ1c2VySWQiOjF9.3s806ZO5LI8LiOhf0fYbq39XP5z1C0nmpXf_3be9Azg
 
 {
-    "name":"new event",
+    "name":"new 2 event",
     "description":"new event",
     "location":"new event",
     "datetime":"2020-10-10T15:00:00.000Z"
